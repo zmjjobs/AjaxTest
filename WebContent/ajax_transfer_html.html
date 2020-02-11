@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>js/jQuery实现Ajax传输HTML</title>
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		//jsAjaxTransferHTML()
+		
+		jQueryAjaxTransferHTML()
+	}
+	
+	function jQueryAjaxTransferHTML(){
+		$("a").click(function(){
+			//后面设置只显示哪个部分 ，比如这里只显示 span里面的a标签
+			var url = this.href + " span a"
+			//var url = this.href
+			
+			var args = {"time":new Date()}
+			
+			//如果没有参数则是GET请求，如果有参数则是POST请求
+			$("#details").load(url,args)
+			//$("#details").load(url)
+			
+			return false
+		})
+	}
+	
+	function jsAjaxTransferHTML(){
+		var aNodes = document.getElementsByTagName("a")
+		for(var i=0;i<aNodes.length;i++) {
+			aNodes[i].onclick = function(){
+				var request = new XMLHttpRequest()
+				var method = "GET"
+				var url = this.href
+				request.open(method,url)
+				request.send(null)
+				request.onreadystatechange=function(){
+					if(request.readyState == 4) {
+						if(request.status == 200 || request.status == 304) {
+							document.getElementById("details").innerHTML = request.responseText
+						}
+					}
+				}
+				return false
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>People</h1>
+	<ul>
+		<li><a href="html/a.html">A</a></li>
+		<li><a href="html/b.html">B</a></li>
+	</ul>
+	<div id="details"></div>
+</body>
+</html>

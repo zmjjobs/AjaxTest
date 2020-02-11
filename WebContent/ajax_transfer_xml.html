@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>js/jQuery实现ajax传输XML</title>
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		//jsAjaxTransferXML()
+		
+		jQueryAjaxTransferXML()
+	}
+	function jQueryAjaxTransferXML(){
+		$("a").click(function(){
+			var url = this.href
+			var args = {"time" : new Date()}
+			$.post(url,args,function(data){
+				var name = $(data).find("name").text()
+				var website = $(data).find("website").text()
+				$("#details")
+				.empty()
+				.append("<h2><a href='"+website+"'>"+name+"</a></h2>")
+				.append("<a href='"+website+"'>"+website+"</a>")
+			})
+			return false
+		})
+	}
+	function jsAjaxTransferXML(){
+		var aNodes = document.getElementsByTagName("a")
+		for(var i=0;i<aNodes.length;i++) {
+			aNodes[i].onclick = function(){
+				var request = new XMLHttpRequest()
+				var method = "GET"
+				var url = this.href
+				request.open(method,url)
+				request.send(null)
+				request.onreadystatechange=function(){
+					if(request.readyState == 4) {
+						if(request.status == 200 || request.status == 304) {
+							var result = request.responseXML
+							
+							var name = result.getElementsByTagName("name")[0].firstChild.nodeValue
+							var website = result.getElementsByTagName("website")[0].firstChild.nodeValue
+							
+							var aNode = document.createElement("a")
+							aNode.appendChild(document.createTextNode(name))
+							var h2Node = document.createElement("h2")
+							h2Node.appendChild(aNode)
+							
+							var aNode2 = document.createElement("a")
+							aNode2.appendChild(document.createTextNode(website))
+							aNode2.href = website
+							
+							var detailsNode = document.getElementById("details")
+							detailsNode.innerHTML = ""
+							detailsNode.appendChild(h2Node)
+							detailsNode.appendChild(aNode2)
+							
+						}
+					}
+				}
+				return false
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>People</h1>
+	<ul>
+		<li><a href="xml/baidu.xml">A</a></li>
+		<li><a href="xml/360.xml">B</a></li>
+	</ul>
+	<div id="details"></div>
+</body>
+</html>

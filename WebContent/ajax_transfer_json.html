@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery实现ajax传输JSON</title>
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		//jQueryAjaxTransferJSON_1()
+		//jQueryAjaxTransferJSON_2()
+		jQueryAjaxTransferJSON_3()
+	}
+	function jQueryAjaxTransferJSON_1(){
+		$("a").click(function(){
+			var url = this.href
+			var args = {"time" : new Date()}
+			$.getJSON(url,args,function(data){
+				var name = data.person.name
+				var website = data.person.website
+				$("#details")
+				.empty()
+				.append("<h2><a href='"+website+"'>"+name+"</a></h2>")
+				.append("<a href='"+website+"'>"+website+"</a>")
+			})
+			return false
+		})
+	}
+	function jQueryAjaxTransferJSON_2(){
+		$("a").click(function(){
+			var url = this.href
+			var args = {"time" : new Date()}
+			$.get(url,args,function(data){
+				var name = data.person.name
+				var website = data.person.website
+				$("#details")
+				.empty()
+				.append("<h2><a href='"+website+"'>"+name+"</a></h2>")
+				.append("<a href='"+website+"'>"+website+"</a>")
+			},"JSON")
+			return false
+		})
+	}
+	function jQueryAjaxTransferJSON_3(){
+		$("a").click(function(){
+			var url = this.href
+			var args = {"time" : new Date()}
+			$.post(url,args,function(data){
+				var name = data.person.name
+				var website = data.person.website
+				$("#details")
+				.empty()
+				.append("<h2><a href='"+website+"'>"+name+"</a></h2>")
+				.append("<a href='"+website+"'>"+website+"</a>")
+			},"JSON")
+			return false
+		})
+	}
+</script>
+</head>
+<body>
+	<h1>People</h1>
+	<ul>
+		<li><a href="json/person.json">A</a></li>
+	</ul>
+	<div id="details"></div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ajax.app.bean.ShoppingCart;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet("/addToCart")
 public class AddToCartServlet extends HttpServlet {
@@ -34,18 +35,23 @@ public class AddToCartServlet extends HttpServlet {
 		shoppingCart.addToCart(bookName, price);
 		
 		//准备JSON对象
-		StringBuilder builder = new StringBuilder();
-		builder.append("{")
-				.append("\"bookName\":\"")
-				.append(bookName)
-				.append("\",\"totalBookNum\":")
-				.append(shoppingCart.getTotalBookNum())
-				.append(",\"totalMoney\":")
-				.append(shoppingCart.getTotalMoney())
-				.append("}");
+//		StringBuilder builder = new StringBuilder();
+//		builder.append("{")
+//				.append("\"bookName\":\"")
+//				.append(bookName)
+//				.append("\",\"totalBookNum\":")
+//				.append(shoppingCart.getTotalBookNum())
+//				.append(",\"totalMoney\":")
+//				.append(shoppingCart.getTotalMoney())
+//				.append("}");
+		
+		//导入jackson的三个jar包后，创建对象
+		ObjectMapper mapper = new ObjectMapper();
+		String result = mapper.writeValueAsString(shoppingCart);
+		System.out.println(result);
 		//发送响应
 		response.setContentType("text/javascript");
-		response.getWriter().print(builder.toString());
+		response.getWriter().print(result);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
